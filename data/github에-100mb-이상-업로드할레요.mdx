@@ -1,0 +1,50 @@
+---
+title: github에 100mb 이상 업로드할레요
+date: "2023-12-06"
+tags: ["lfs", "git"]
+draft: false
+summary: github에 100mb 이상 업로드 하려니까 막아버리면서 lfs라는 것을 쓰라고 하네요?
+---
+
+# github에 100mb 이상 업로드할래요
+
+100mb 이상 파일은 그냥은 못 들여보내준다고 한다.
+그러면서 ```git-lfs.com```를 확인해보라고 해서 확인해봤다.
+
+```brew install git-lfs```를 통해 Large File Storage를 설치해주자!
+
+깔고나면
+
+```
+# Update global git config
+$ git lfs install
+```
+
+를 통해서 전역 설정을 해주라고 한다. 그럼 이제 lfs를 관리할 수 있습니다!
+lfs로 관리할 파일을 선택해주면 됩니다 :)
+
+저 같은 경우는 electron을 사용해 앱을 만드는 중에 이러한 오류가 발생했고,
+인터넷에서 찾은 명령어 ```find . -type f -size +100M```를 실행해 100mb 이상의 파일을 탐색하고
+
+```
+git lfs track ./node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron\ Framework.framework/Versions/A/Electron\ Framework
+```
+
+를 통해서 lfs에 다음과 같은 파일을 올려주었습니다.
+그리고 나서 ```git add .gitattributes```를 통해 파일을 추가해주고,
+
+커밋 후 푸시까지 하려고 했으나... 안됩니다 ㅠㅠㅠ
+
+```
+git rm --cached ./node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron\ Framework.framework/Versions/A/Electron\ Framework
+```
+
+깃허브 문서도 확인하고 다양한 문서를 확인했으나 해당 리포지토리가 이상한건지 푸시가 되지 않아서 좀 더 알아봐야 할 것 같습니다.
+
+## 마치며 & 오류
+
+```
+remote: error: File node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework is 142.88 MB; this exceeds GitHub's file size limit of 100.00 MB
+```
+
+아시는 분은 me@xolving.com으로 연락 좀...
